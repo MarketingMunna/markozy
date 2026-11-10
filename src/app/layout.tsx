@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Sora } from "next/font/google";
-import "lenis/dist/lenis.css";
 import "./globals.css";
 import Providers from "@/components/providers/Providers";
 import Navbar from "@/components/layout/Navbar";
