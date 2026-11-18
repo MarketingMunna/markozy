@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Check } from "lucide-react";
 import PageHero from "@/components/layout/PageHero";
@@ -6,21 +5,23 @@ import ServiceVisual from "@/components/ui/ServiceVisual";
 import ServiceIcon from "@/components/ui/ServiceIcon";
 import MagneticButton from "@/components/ui/MagneticButton";
 import Reveal from "@/components/ui/Reveal";
-import Process from "@/components/home/Process";
 import CTASection from "@/components/home/CTASection";
 import { services } from "@/lib/services";
 import { cn } from "@/lib/utils";
+import { JsonLd, breadcrumbJsonLd, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Services",
+export const metadata = pageMeta({
+  title: "Digital Marketing Services in Malaysia: SEO, Ads & Automation | Markozy",
   description:
-    "SEO, AI automation, website development, Meta Ads, Google Ads and TikTok Ads — integrated digital growth services from Markozy.",
-  alternates: { canonical: "/services" },
-};
+    "SEO, AI automation, website development, Meta Ads, Google Ads and TikTok Ads for Malaysian SMEs, run as one integrated growth plan by Markozy.",
+  path: "/services",
+  imageLabel: "Services",
+});
 
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Services", path: "/services" }])} />
       <PageHero
         eyebrow="Services"
         title="Everything You Need to Grow Online."
@@ -77,7 +78,6 @@ export default function ServicesPage() {
         ))}
       </div>
 
-      <Process />
       <CTASection />
     </>
   );

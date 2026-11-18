@@ -9,6 +9,7 @@ import Reveal from "@/components/ui/Reveal";
 import CTASection from "@/components/home/CTASection";
 import { getProject, projects } from "@/lib/projects";
 import { services } from "@/lib/services";
+import { pageMeta } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -22,11 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const p = getProject(slug);
   if (!p) return {};
-  return {
-    title: `${p.name} (Demo Case Study)`,
+  return pageMeta({
+    title: `${p.name} (Demo Case Study) | Markozy`,
     description: `Illustrative demo project: ${p.summary}`,
-    alternates: { canonical: `/work/${p.slug}` },
-  };
+    path: `/work/${p.slug}`,
+    noindex: true,
+  });
 }
 
 export default async function CaseStudyPage({ params }: Props) {

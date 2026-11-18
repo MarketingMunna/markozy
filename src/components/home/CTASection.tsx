@@ -2,7 +2,7 @@ import { ArrowUpRight, MessageCircle } from "lucide-react";
 import MagneticButton from "@/components/ui/MagneticButton";
 import TextReveal from "@/components/ui/TextReveal";
 import Reveal from "@/components/ui/Reveal";
-import { whatsappLink } from "@/lib/site";
+import { consultCta, whatsappLink } from "@/lib/site";
 
 export default function CTASection({
   title = "Let's Build Your Next Stage of Growth.",
@@ -22,8 +22,8 @@ export default function CTASection({
             <Reveal delay={0.2}>
               <p className="mx-auto mt-6 max-w-xl text-base text-mist sm:text-lg">{text}</p>
               <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <MagneticButton href="/contact" size="lg">
-                  Book a Free Consultation <ArrowUpRight className="h-5 w-5 transition-transform group-hover:rotate-45" />
+                <MagneticButton href={consultCta.href} external={consultCta.external} size="lg">
+                  {consultCta.label} <ArrowUpRight className="h-5 w-5 transition-transform group-hover:rotate-45" />
                 </MagneticButton>
                 <MagneticButton href={whatsappLink()} external variant="ghost" size="lg">
                   <MessageCircle className="h-5 w-5" /> Chat on WhatsApp

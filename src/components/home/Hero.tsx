@@ -7,6 +7,7 @@ import { ArrowDown, ArrowRight, BrainCircuit, CalendarCheck, ChartNoAxesColumnIn
 import MagneticButton from "@/components/ui/MagneticButton";
 import TextReveal from "@/components/ui/TextReveal";
 import { services } from "@/lib/services";
+import { consultCta } from "@/lib/site";
 
 function SphereFallback() {
   return (
@@ -108,7 +109,7 @@ export default function Hero() {
             <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand/25"><Search className="h-4 w-4 text-brand-soft" /></span>
             <div>
               <p className="text-xs font-semibold text-white">SEO audit</p>
-              <p className="text-[11px] text-mist">Technical scan running…</p>
+              <p className="text-[11px] text-mist">Crawl · speed · schema</p>
             </div>
           </div>
           <div className="mt-3 h-1.5 w-44 overflow-hidden rounded-full bg-white/10">
@@ -153,7 +154,7 @@ export default function Hero() {
           className="glass inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-xs font-medium text-white/90"
         >
           <Sparkles className="h-3.5 w-3.5 text-brand-soft" aria-hidden="true" />
-          Your Digital Growth Partner
+          Digital Growth Agency for Malaysian SMEs
         </motion.p>
 
         <TextReveal
@@ -172,8 +173,8 @@ export default function Hero() {
           transition={{ delay: 1.1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           className="mt-7 max-w-xl text-base leading-relaxed text-mist sm:text-lg"
         >
-          From intelligent automation to performance marketing, we help ambitious brands turn digital opportunities into
-          measurable business growth.
+          SEO, AI automation and performance ads on Meta, Google and TikTok, run as one plan to help Malaysian
+          businesses win more leads and sales.
         </motion.p>
 
         <motion.div
@@ -185,8 +186,8 @@ export default function Hero() {
           <MagneticButton href="#services" size="lg">
             Explore Our Services <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
           </MagneticButton>
-          <MagneticButton href="/contact" variant="ghost" size="lg">
-            Book a Free Consultation
+          <MagneticButton href={consultCta.href} external={consultCta.external} variant="ghost" size="lg">
+            {consultCta.label}
           </MagneticButton>
         </motion.div>
 

@@ -1,10 +1,11 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Markozy — We Build. We Automate. We Grow.";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+/** Per-page share image: /og?title=...&label=... (1200×630). */
+export function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const title = (searchParams.get("title") || "Your Digital Growth Partner in Malaysia").slice(0, 110);
+  const label = (searchParams.get("label") || "Digital Growth Agency · Malaysia").slice(0, 60);
 
-export default function OpengraphImage() {
   return new ImageResponse(
     (
       <div
@@ -25,11 +26,15 @@ export default function OpengraphImage() {
           <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: 8 }}>MARKOZY</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 76, fontWeight: 700, lineHeight: 1.05, maxWidth: 900 }}>We Build Digital Experiences That Drive Growth.</div>
-          <div style={{ fontSize: 30, color: "#A78BFA", marginTop: 28 }}>We Build. We Automate. We Grow.</div>
+          <div style={{ fontSize: 28, color: "#A78BFA", textTransform: "uppercase", letterSpacing: 4 }}>{label}</div>
+          <div style={{ fontSize: title.length > 60 ? 60 : 72, fontWeight: 700, lineHeight: 1.08, maxWidth: 1000, marginTop: 20 }}>{title}</div>
         </div>
       </div>
     ),
-    size,
+    {
+      width: 1200,
+      height: 630,
+      headers: { "Cache-Control": "public, max-age=86400, immutable" },
+    },
   );
 }

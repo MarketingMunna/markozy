@@ -1,16 +1,19 @@
-import type { Metadata } from "next";
 import PageHero from "@/components/layout/PageHero";
+import { pageMeta } from "@/lib/seo";
 import ProjectCard from "@/components/work/ProjectCard";
 import CTASection from "@/components/home/CTASection";
 import { DemoBadge } from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
 import { projects } from "@/lib/projects";
 
-export const metadata: Metadata = {
-  title: "Our Work",
-  description: "Explore how Markozy approaches growth challenges across industries through illustrative demo projects.",
-  alternates: { canonical: "/work" },
-};
+// Demo projects: kept reachable by direct link but out of search results, the sitemap and the navigation
+// until real case studies replace them.
+export const metadata = pageMeta({
+  title: "Our Work (Demo Concepts) | Markozy",
+  description: "Illustrative demo projects showing how Markozy approaches growth challenges. Real client case studies coming soon.",
+  path: "/work",
+  noindex: true,
+});
 
 export default function WorkPage() {
   return (

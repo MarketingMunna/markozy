@@ -1,19 +1,21 @@
-import type { Metadata } from "next";
 import PageHero from "@/components/layout/PageHero";
 import PostCard from "@/components/blog/PostCard";
 import Reveal from "@/components/ui/Reveal";
 import CTASection from "@/components/home/CTASection";
 import { posts } from "@/lib/posts";
+import { JsonLd, breadcrumbJsonLd, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Blog",
-  description: "Practical insights on SEO, AI automation, web development and paid advertising from the Markozy team.",
-  alternates: { canonical: "/blog" },
-};
+export const metadata = pageMeta({
+  title: "Digital Marketing Blog: SEO, Ads & AI Automation Tips | Markozy",
+  description: "Practical guides on SEO, AI automation, websites and Meta, Google and TikTok ads for Malaysian businesses, from the Markozy team.",
+  path: "/blog",
+  imageLabel: "Blog",
+});
 
 export default function BlogPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "Blog", path: "/blog" }])} />
       <PageHero
         eyebrow="Insights"
         title="Ideas for Smarter Growth."

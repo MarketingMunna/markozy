@@ -15,7 +15,7 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <Logo />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-mist">
-              {site.positioning} We combine technology, creativity and performance marketing to help ambitious brands grow
+              {site.positioning} We combine technology, creativity and performance marketing to help Malaysian SMEs grow
               — built, automated and scaled.
             </p>
             <p className="mt-6 font-display text-sm font-medium tracking-wide text-brand-soft">{site.tagline}</p>
@@ -78,7 +78,13 @@ export default function Footer() {
         </p>
 
         <div className="mt-6 flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-8 text-xs text-mist sm:flex-row">
-          <p>© {year} Markozy. All rights reserved.</p>
+          <p>
+            © {year} Markozy{site.companyReg ? ` (SSM ${site.companyReg})` : ""}. All rights reserved.
+          </p>
+          <ul className="flex items-center gap-5">
+            <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
+            <li><Link href="/terms" className="hover:text-white">Terms of Service</Link></li>
+          </ul>
         </div>
       </div>
     </footer>

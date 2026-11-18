@@ -20,6 +20,7 @@ async function sendWithResend(data: ContactInput) {
     <p><strong>Email:</strong> ${escape(data.email)}</p>
     <p><strong>Company:</strong> ${escape(data.company || "—")}</p>
     <p><strong>Service:</strong> ${escape(data.service)}</p>
+    <p><strong>Budget:</strong> ${escape(data.budget || "—")}</p>
     <p><strong>Details:</strong></p>
     <p style="white-space:pre-wrap">${escape(data.details)}</p>`;
   const res = await fetch("https://api.resend.com/emails", {

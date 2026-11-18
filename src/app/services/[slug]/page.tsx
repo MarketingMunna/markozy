@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, ArrowUpRight, Check, MessageCircle } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, MessageCircle, Plus } from "lucide-react";
 import PageHero from "@/components/layout/PageHero";
 import ServiceVisual from "@/components/ui/ServiceVisual";
 import ServiceIcon from "@/components/ui/ServiceIcon";
 import MagneticButton from "@/components/ui/MagneticButton";
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
-import Process from "@/components/home/Process";
 import ContactSection from "@/components/contact/ContactSection";
 import { getService, services } from "@/lib/services";
-import { whatsappLink } from "@/lib/site";
+import { posts } from "@/lib/posts";
+import { site, whatsappLink } from "@/lib/site";
+import { JsonLd, breadcrumbJsonLd, pageMeta } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -25,12 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const s = getService(slug);
   if (!s) return {};
-  return {
-    title: `${s.name} — ${s.title}`,
-    description: s.description,
-    alternates: { canonical: `/services/${s.slug}` },
-    openGraph: { title: `${s.name} | Markozy`, description: s.description },
-  };
+  return pageMeta({ title: `${s.seoTitle} | Markozy`, description: s.description, path: `/services/${s.slug}`, imageLabel: s.name });
 }
 
 export default async function ServiceDetailPage({ params }: Props) {
@@ -38,9 +34,29 @@ export default async function ServiceDetailPage({ params }: Props) {
   const service = getService(slug);
   if (!service) notFound();
   const others = services.filter((s) => s.slug !== service.slug);
+  const relatedPosts = posts.filter((p) => p.services.includes(service.slug));
+
+  const serviceJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    serviceType: service.name,
+    description: service.description,
+    provider: { "@id": `${site.url}/#organization` },
+    areaServed: { "@type": "Country", name: site.areaServed },
+    url: `${site.url}/services/${service.slug}`,
+  };
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: service.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+  };
 
   return (
     <>
+      <JsonLd data={serviceJsonLd} />
+      <JsonLd data={faqJsonLd} />
+      <JsonLd data={breadcrumbJsonLd([{ name: "Services", path: "/services" }, { name: service.name, path: `/services/${service.slug}` }])} />
       <PageHero
         eyebrow={`Service ${service.number}`}
         title={service.title}
@@ -110,7 +126,60 @@ export default async function ServiceDetailPage({ params }: Props) {
         </div>
       </section>
 
-      <Process />
+      <section aria-labelledby="timeline-heading" className="py-16 sm:py-24">
+        <div className="container-x">
+          <SectionHeading
+            id="timeline-heading"
+            eyebrow="What to expect"
+            title={`Your First Six Months of ${service.name}.`}
+            highlight={["Six", "Months"]}
+            description="Typical milestones for this service. We confirm the exact plan with you after the first consultation."
+          />
+          <ol className="mt-14 grid gap-5 md:grid-cols-3">
+            {service.timeline.map((t, i) => (
+              <Reveal as="li" key={t.phase} delay={i * 0.08}>
+                <div className="glow-border h-full rounded-3xl bg-coal/60 p-7">
+                  <p className="font-display text-xs font-semibold uppercase tracking-[0.25em] text-brand-soft">{t.phase}</p>
+                  <p className="mt-4 text-sm leading-relaxed text-white/90 sm:text-base">{t.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section aria-labelledby="faq-heading" className="py-16 sm:py-24">
+        <div className="container-x grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <SectionHeading id="faq-heading" eyebrow="FAQ" title={`${service.name} Questions, Answered.`} highlight={["Answered."]} />
+          </div>
+          <div className="space-y-3 lg:col-span-8">
+            {service.faqs.map((f) => (
+              <details key={f.q} className="group rounded-2xl border border-white/[0.07] bg-coal/60 p-5 open:bg-coal">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-medium [&::-webkit-details-marker]:hidden">
+                  {f.q}
+                  <Plus className="h-5 w-5 shrink-0 text-brand-soft transition-transform group-open:rotate-45" aria-hidden="true" />
+                </summary>
+                <p className="mt-4 text-sm leading-relaxed text-mist sm:text-base">{f.a}</p>
+              </details>
+            ))}
+            {relatedPosts.length > 0 && (
+              <div className="pt-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-brand-soft">Further reading</p>
+                <ul className="mt-3 space-y-2">
+                  {relatedPosts.map((p) => (
+                    <li key={p.slug}>
+                      <Link href={`/blog/${p.slug}`} className="text-white/90 underline-offset-4 hover:text-white hover:underline">
+                        {p.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
 
       <section aria-labelledby="other-services-heading" className="py-16 sm:py-24">
         <div className="container-x">

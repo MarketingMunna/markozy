@@ -3,7 +3,8 @@
 import { useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { CircleCheck, Info, LoaderCircle, Send } from "lucide-react";
-import { contactSchema, serviceOptions, type ContactInput } from "@/lib/contact-schema";
+import Link from "next/link";
+import { budgetOptions, contactSchema, serviceOptions, type ContactInput } from "@/lib/contact-schema";
 import { cn } from "@/lib/utils";
 
 type Errors = Partial<Record<keyof ContactInput, string>>;
@@ -14,7 +15,7 @@ const fieldBase =
 
 export default function ContactForm({ defaultService }: { defaultService?: string }) {
   const initialService = serviceOptions.includes(defaultService as (typeof serviceOptions)[number]) ? defaultService! : "";
-  const [values, setValues] = useState({ name: "", email: "", company: "", service: initialService, details: "", website: "" });
+  const [values, setValues] = useState({ name: "", email: "", company: "", service: initialService, budget: "", details: "", website: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [status, setStatus] = useState<Status>({ state: "idle" });
 
@@ -54,7 +55,7 @@ export default function ContactForm({ defaultService }: { defaultService?: strin
       const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string; fieldErrors?: Errors };
       if (res.ok && json.ok) {
         setStatus({ state: "success", message: "Thanks! Your inquiry has been sent. We'll get back to you within 24 hours." });
-        setValues({ name: "", email: "", company: "", service: "", details: "", website: "" });
+        setValues({ name: "", email: "", company: "", service: "", budget: "", details: "", website: "" });
         return;
       }
       if (json.fieldErrors) setErrors(json.fieldErrors);
@@ -95,6 +96,16 @@ export default function ContactForm({ defaultService }: { defaultService?: strin
         </Field>
       </div>
 
+      <Field id="budget" label="Monthly Budget (optional)" error={errors.budget} floatAlways>
+        <select id="cf-budget" name="budget" value={values.budget} onChange={(e) => update("budget", e.target.value)} aria-invalid={Boolean(errors.budget)} aria-describedby={errorId("budget")} className={cn(fieldBase, borderFor("budget"), "appearance-none pr-10 [&>option]:bg-coal", !values.budget && "text-mist")}>
+          <option value="">Prefer not to say</option>
+          {budgetOptions.map((b) => (
+            <option key={b} value={b}>{b}</option>
+          ))}
+        </select>
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-mist"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+      </Field>
+
       <Field id="details" label="Project Details *" error={errors.details}>
         <textarea id="cf-details" name="details" rows={5} placeholder="Project details" value={values.details} onChange={(e) => update("details", e.target.value)} aria-invalid={Boolean(errors.details)} aria-describedby={errorId("details")} aria-required="true" className={cn(fieldBase, borderFor("details"), "resize-y")} />
       </Field>
@@ -123,6 +134,10 @@ export default function ContactForm({ defaultService }: { defaultService?: strin
         </button>
         <p className="text-xs text-mist">We reply within 24 hours. No spam, ever.</p>
       </div>
+      <p className="text-xs text-mist">
+        By sending this form you agree that we may use your details to reply to your enquiry, as described in our{" "}
+        <Link href="/privacy" className="text-white underline underline-offset-2 hover:text-brand-soft">Privacy Policy</Link>.
+      </p>
 
       <div aria-live="polite" role="status">
         <AnimatePresence>

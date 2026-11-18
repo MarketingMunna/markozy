@@ -23,38 +23,26 @@ const icons: Record<string, React.ReactNode> = {
   ),
 };
 
-/** Renders configured profiles as links; unconfigured ones show as disabled "coming soon" icons. */
+/** Renders only real profile links (site.social drops empty values and bare platform homepages). */
 export default function SocialIcons({ className }: { className?: string }) {
+  if (site.social.length === 0) return null;
   return (
     <ul className={cn("flex items-center gap-2", className)}>
-      {site.social.map((s) => {
-        const base =
-          "flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-mist transition-colors duration-300";
-        const svg = (
-          <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden="true">
-            {icons[s.key]}
-          </svg>
-        );
-        return (
-          <li key={s.key}>
-            {s.href ? (
-              <a
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Markozy on ${s.label}`}
-                className={cn(base, "hover:border-brand-soft/60 hover:bg-brand/15 hover:text-white")}
-              >
-                {svg}
-              </a>
-            ) : (
-              <span className={cn(base, "opacity-50")} title={`${s.label} — coming soon`} aria-label={`${s.label} profile coming soon`} role="img">
-                {svg}
-              </span>
-            )}
-          </li>
-        );
-      })}
+      {site.social.map((s) => (
+        <li key={s.key}>
+          <a
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`Markozy on ${s.label}`}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-mist transition-colors duration-300 hover:border-brand-soft/60 hover:bg-brand/15 hover:text-white"
+          >
+            <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" aria-hidden="true">
+              {icons[s.key]}
+            </svg>
+          </a>
+        </li>
+      ))}
     </ul>
   );
 }

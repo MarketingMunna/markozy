@@ -39,7 +39,8 @@ export default function ContactSection({ defaultService, headingAs = "h2" }: { d
                 <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03]"><MapPin className="h-5 w-5 text-brand-soft" aria-hidden="true" /></span>
                 <div>
                   <p className="text-xs uppercase tracking-wider text-mist">Location</p>
-                  <p className="font-medium">{site.location}</p>
+                  <address className="font-medium not-italic">{site.location}</address>
+                  <p className="text-xs text-mist">Serving businesses across {site.areaServed}</p>
                 </div>
               </li>
               <li className="flex items-center gap-4">

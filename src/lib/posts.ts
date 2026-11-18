@@ -11,8 +11,15 @@ export type Post = {
   date: string;
   readTime: string;
   hue: number;
+  /** Service page slugs this article supports (used for cross-links both ways). */
+  services: string[];
   content: Block[];
 };
+
+/** Turns a heading into a URL-safe anchor id for the table of contents. */
+export function slugify(text: string) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
 
 export const posts: Post[] = [
   {
@@ -24,6 +31,7 @@ export const posts: Post[] = [
     date: "2026-10-14",
     readTime: "6 min read",
     hue: 265,
+    services: ["seo"],
     content: [
       { type: "p", text: "Search is no longer just ten blue links. AI overviews, chat-based answer engines and richer results now sit between your customer and your website. That has led many businesses to ask whether SEO is still worth the investment. The short answer: yes — but the priorities have shifted." },
       { type: "h2", text: "The fundamentals got more important, not less" },
@@ -46,6 +54,7 @@ export const posts: Post[] = [
     date: "2026-09-30",
     readTime: "5 min read",
     hue: 220,
+    services: ["ai-automation"],
     content: [
       { type: "p", text: "Automation is most valuable when it removes repetitive, rules-based work that slows your team down. Before you buy another tool, start with workflows that are frequent, predictable and painful. Here are five we recommend looking at first." },
       { type: "h2", text: "1. Lead capture and instant response" },
@@ -71,6 +80,7 @@ export const posts: Post[] = [
     date: "2026-09-12",
     readTime: "7 min read",
     hue: 300,
+    services: ["meta-ads", "google-ads", "tiktok-ads"],
     content: [
       { type: "p", text: "There is no single 'best' ad platform. Google, Meta and TikTok each reach people in a different mindset, and the right mix depends on your product, your margins and how people already look for what you sell." },
       { type: "h2", text: "Google Ads: capture existing demand" },
@@ -93,6 +103,7 @@ export const posts: Post[] = [
     date: "2026-08-26",
     readTime: "5 min read",
     hue: 250,
+    services: ["website-development"],
     content: [
       { type: "p", text: "A website can look stunning and still fail to generate business. Conversion comes from clarity, speed and trust working together. Here are the principles we build every site around." },
       { type: "h2", text: "Clarity in five seconds" },

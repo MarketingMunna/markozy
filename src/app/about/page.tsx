@@ -1,19 +1,19 @@
-import type { Metadata } from "next";
 import { Handshake, Target, Lightbulb, ShieldCheck, Layers, Users } from "lucide-react";
 import PageHero from "@/components/layout/PageHero";
-import AboutSection from "@/components/home/AboutSection";
-import WhyChoose from "@/components/home/WhyChoose";
-import Process from "@/components/home/Process";
+import FounderSection from "@/components/about/FounderSection";
 import CTASection from "@/components/home/CTASection";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Reveal from "@/components/ui/Reveal";
+import { author, site } from "@/lib/site";
+import { JsonLd, breadcrumbJsonLd, pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About",
+export const metadata = pageMeta({
+  title: "About Markozy: Digital Growth Agency in Malaysia",
   description:
-    "Markozy is a digital growth partner that combines technology, creativity and performance marketing to help ambitious brands grow.",
-  alternates: { canonical: "/about" },
-};
+    "Meet Markozy, a Malaysian digital growth agency led by Hasan Murad Munna. Our mission, values and how we help SMEs grow with SEO, automation and ads.",
+  path: "/about",
+  imageLabel: "About us",
+});
 
 const values = [
   { icon: Target, title: "Outcomes over output", text: "We measure success by your growth — leads, sales and efficiency — not by hours logged or reports sent." },
@@ -24,18 +24,33 @@ const values = [
   { icon: Users, title: "Craft", text: "Senior-level care on every detail, from a headline to a webhook." },
 ];
 
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: author.name,
+  jobTitle: author.role,
+  image: `${site.url}${author.photo.src}`,
+  url: `${site.url}/about`,
+  description: author.shortBio,
+  knowsAbout: author.knowsAbout,
+  alumniOf: { "@type": "CollegeOrUniversity", name: author.alumniOf },
+  worksFor: { "@id": `${site.url}/#organization` },
+};
+
 export default function AboutPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd([{ name: "About", path: "/about" }])} />
+      <JsonLd data={personJsonLd} />
       <PageHero
         eyebrow="About us"
-        title="We Build. We Automate. We Grow."
-        highlight={["Build.", "Automate.", "Grow."]}
-        description="Markozy exists to give ambitious businesses the digital capabilities of a large in-house team — strategy, engineering, creative and media — without the overhead."
+        title="A Growth Partner for Malaysian SMEs."
+        highlight={["Growth", "Partner"]}
+        description="Markozy gives ambitious Malaysian businesses the digital capabilities of a larger in-house team (strategy, engineering, creative and media) without the overhead."
         crumbs={[{ label: "About" }]}
       />
 
-      <AboutSection />
+      <FounderSection />
 
       <section aria-labelledby="mission-heading" className="py-24 sm:py-32">
         <div className="container-x grid gap-12 lg:grid-cols-2">
@@ -43,13 +58,12 @@ export default function AboutPage() {
           <Reveal delay={0.15}>
             <div className="space-y-5 text-base leading-relaxed text-mist sm:text-lg lg:pt-12">
               <p>
-                Digital marketing has never had more potential — or more complexity. New platforms, AI tools and privacy
-                changes arrive every quarter. Many businesses end up paying for activity instead of progress.
+                Digital marketing has never had more potential, or more complexity. New platforms, AI tools and privacy
+                changes arrive every quarter, and many SMEs end up paying for activity instead of progress.
               </p>
               <p>
-                We started Markozy to change that. Our team blends developers, automation engineers, creatives and media
-                buyers who share one scoreboard: your growth. We keep strategy clear, execution sharp and reporting
-                transparent, so you always know where your investment is going and what it&apos;s returning.
+                We started Markozy to change that. We keep strategy clear, execution sharp and reporting transparent, so
+                you always know where your investment is going and what it&apos;s returning.
               </p>
             </div>
           </Reveal>
@@ -73,8 +87,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <WhyChoose />
-      <Process />
       <CTASection />
     </>
   );

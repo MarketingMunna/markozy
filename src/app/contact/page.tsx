@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import ContactSection from "@/components/contact/ContactSection";
 import { serviceOptions } from "@/lib/contact-schema";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact",
-  description: "Tell us about your goals. Book a free consultation with Markozy or message us on WhatsApp.",
-  alternates: { canonical: "/contact" },
-};
+export const metadata = pageMeta({
+  title: "Contact Markozy: Request a Free Consultation in Malaysia",
+  description: "Tell us about your goals. Request a free consultation with Markozy or message us on WhatsApp. We reply within 24 hours.",
+  path: "/contact",
+  imageLabel: "Contact",
+});
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ service?: string | string[] }> }) {
   const { service } = await searchParams;

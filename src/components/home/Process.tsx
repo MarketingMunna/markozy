@@ -71,7 +71,7 @@ export default function Process() {
               eyebrow="Our process"
               title="From First Call to Compounding Growth."
               highlight={["Compounding", "Growth."]}
-              description="A proven six-step framework that keeps every project focused, measurable and moving forward."
+              description="Our six-step framework keeps every project focused, measurable and moving forward."
             />
           </div>
         </div>
