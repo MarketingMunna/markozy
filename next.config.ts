@@ -20,6 +20,18 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  // Old WordPress URLs on markozy.com that have no direct equivalent (301 so search engines move them over).
+  async redirects() {
+    return [
+      { source: "/hello-world", destination: "/blog", permanent: true },
+      { source: "/category/:path*", destination: "/blog", permanent: true },
+      { source: "/feed", destination: "/blog", permanent: true },
+      { source: "/comments/feed", destination: "/blog", permanent: true },
+      { source: "/:slug(post|page|category)-sitemap.xml", destination: "/sitemap.xml", permanent: true },
+      { source: "/sitemap_index.xml", destination: "/sitemap.xml", permanent: true },
+      { source: "/wp-sitemap.xml", destination: "/sitemap.xml", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {
